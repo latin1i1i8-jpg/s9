@@ -16,12 +16,12 @@ android {
         versionName = "1.0"
     }
 
-    // 🌟 핵심: 루트에 흩어져 있는 소스/리소스 파일들의 위치를 지정합니다.
+    // 🌟 핵심: 빈 문자열("") 대신 현재 경로(".")로 올바르게 설정합니다.
     sourceSets {
         getByName("main") {
             manifest.srcFile("AndroidManifest.xml")
-            java.srcDirs("")          // 루트 폴더의 Kotlin/Java 파일 인식
-            res.srcDirs(".")           // 루트 폴더의 res 관련 xml 파일 인식 (strings, themes 등)
+            java.srcDirs(".")
+            res.srcDirs(".")
         }
     }
 
