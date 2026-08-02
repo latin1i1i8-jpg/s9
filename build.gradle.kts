@@ -16,17 +16,12 @@ android {
         versionName = "1.0"
     }
 
-    // 🌟 핵심: 루트 전체(".")가 아닌 특정 폴더/파일 경로로 한정하여 build/ 디렉터리 간섭 차단
+    // 🌟 핵심: 루트 폴더(".")를 보되, build 디렉터리 및 기타 작업 디렉터리와 태스크 간 충돌 방지
     sourceSets {
         getByName("main") {
             manifest.srcFile("AndroidManifest.xml")
-            
-            // 소스 코드는 루트 디렉터리를 포함하되
             java.srcDirs(".")
-            
-            // res 폴더는 루트 전체 대신 res/ 폴더가 있다면 그쪽을 가리키게 하거나
-            // res 디렉터리 경로를 명확히 분리합니다.
-            res.srcDirs("res") 
+            res.srcDirs("res")
         }
     }
 
@@ -52,6 +47,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+// 🌟 루트 디렉터리 지정으로 인한 Gradle Task 순환 참조(Implicit Dependency) 강제 해결
+tasks.matching { it.name.startsWith("compileDebugKotlin") }.configureEach {
+    mustRunAfter(tasks.matching { it.name.startsWith("checkDebugDuplicateClasses") })
+    mustRunAfter(tasks.matching { it.name.startsWith("mergeLibDexDebug") })
 }
 
 dependencies {
