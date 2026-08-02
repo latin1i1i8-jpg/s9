@@ -35,3 +35,7 @@ jobs:
           name: app-debug-apk
           path: build/outputs/apk/debug/*.apk
           retention-days: 30
+          
+# -Pandroid.useAndroidX=true 옵션을 직접 전달해서 강제로 활성화합니다.
+      - name: Build APK
+        run: gradle assembleDebug -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true --no-daemon
