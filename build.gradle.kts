@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.jarvis.assistant"
-    compileSdk = 34 // 35에서 가장 안정적인 34로 조정
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.jarvis.assistant"
@@ -14,6 +14,15 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+    }
+
+    // 🌟 핵심: 루트에 흩어져 있는 소스/리소스 파일들의 위치를 지정합니다.
+    sourceSets {
+        getByName("main") {
+            manifest.srcFile("AndroidManifest.xml")
+            java.srcDirs("")          // 루트 폴더의 Kotlin/Java 파일 인식
+            res.srcDirs(".")           // 루트 폴더의 res 관련 xml 파일 인식 (strings, themes 등)
+        }
     }
 
     buildTypes {
@@ -45,13 +54,15 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     
-    // Compose BOM (버전 호환성 자동 관리)
+    // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2024.02.00"))
     implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     debugImplementation("androidx.compose.ui:ui-tooling")
     
-    // Play Services Location (호환성 보장 버전)
+    // 추가 라이브러리
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
