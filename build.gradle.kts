@@ -16,13 +16,17 @@ android {
         versionName = "1.0"
     }
 
-    // 🌟 핵심: 루트 폴더(".") 전체를 등록하되, build/ 등 자동생성 폴더와의 충돌을 완벽히 차단
+    // 🌟 핵심: 루트 전체(".")가 아닌 특정 폴더/파일 경로로 한정하여 build/ 디렉터리 간섭 차단
     sourceSets {
         getByName("main") {
             manifest.srcFile("AndroidManifest.xml")
-            // 현재 프로젝트 경로 설정
-            java.setSrcDirs(listOf("."))
-            res.setSrcDirs(listOf("."))
+            
+            // 소스 코드는 루트 디렉터리를 포함하되
+            java.srcDirs(".")
+            
+            // res 폴더는 루트 전체 대신 res/ 폴더가 있다면 그쪽을 가리키게 하거나
+            // res 디렉터리 경로를 명확히 분리합니다.
+            res.srcDirs("res") 
         }
     }
 
