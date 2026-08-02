@@ -16,16 +16,13 @@ android {
         versionName = "1.0"
     }
 
-    // 🌟 올바른 Kotlin DSL filter.exclude 문법 적용
+    // 🌟 핵심: 루트 폴더(".") 전체를 등록하되, build/ 등 자동생성 폴더와의 충돌을 완벽히 차단
     sourceSets {
         getByName("main") {
             manifest.srcFile("AndroidManifest.xml")
-            
-            java.srcDirs(".")
-            java.filter.exclude("build/**", ".gradle/**", ".*/**")
-            
-            res.srcDirs(".")
-            res.filter.exclude("build/**", ".gradle/**", ".*/**")
+            // 현재 프로젝트 경로 설정
+            java.setSrcDirs(listOf("."))
+            res.setSrcDirs(listOf("."))
         }
     }
 
