@@ -16,17 +16,16 @@ android {
         versionName = "1.0"
     }
 
-    // 🌟 핵심: 전체 루트(".") 대신 소스 파일이 위치한 루트를 개별 지정하고 build/ 폴더 오염을 방지합니다.
+    // 🌟 올바른 Kotlin DSL filter.exclude 문법 적용
     sourceSets {
         getByName("main") {
             manifest.srcFile("AndroidManifest.xml")
-            // 루트의 Kotlin 파일들을 인식하되 build/ 등 임시 생성 폴더는 소스에서 제외
-            java.srcDirs(".")
-            java.exclude("build/**", ".gradle/**", ".*/**")
             
-            // res 폴더 역할을 하는 루트의 XML 파일들 연결
+            java.srcDirs(".")
+            java.filter.exclude("build/**", ".gradle/**", ".*/**")
+            
             res.srcDirs(".")
-            res.exclude("build/**", ".gradle/**", ".*/**")
+            res.filter.exclude("build/**", ".gradle/**", ".*/**")
         }
     }
 
