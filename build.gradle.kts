@@ -16,7 +16,6 @@ android {
         versionName = "1.0"
     }
 
-    // 🌟 핵심: 루트 폴더(".")를 보되, build 디렉터리 및 기타 작업 디렉터리와 태스크 간 충돌 방지
     sourceSets {
         getByName("main") {
             manifest.srcFile("AndroidManifest.xml")
@@ -49,10 +48,14 @@ android {
     }
 }
 
-// 🌟 루트 디렉터리 지정으로 인한 Gradle Task 순환 참조(Implicit Dependency) 강제 해결
+// 🌟 핵심: compileDebugKotlin 실행 전에 문제될 수 있는 모든 병렬/선행 태스크들이 먼저 완료되도록 일괄 처리
 tasks.matching { it.name.startsWith("compileDebugKotlin") }.configureEach {
-    mustRunAfter(tasks.matching { it.name.startsWith("checkDebugDuplicateClasses") })
-    mustRunAfter(tasks.matching { it.name.startsWith("mergeLibDexDebug") })
+    mustRunAfter(tasks.matching { 
+        it.name.startsWith("merge") || 
+        it.name.startsWith("check") || 
+        it.name.startsWith("process") || 
+        it.name.startsWith("map")
+    })
 }
 
 dependencies {
